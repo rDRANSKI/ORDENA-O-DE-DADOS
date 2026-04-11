@@ -26,27 +26,45 @@ public class Main {
 
                 int alvo = vetor[r.nextInt(n)];
 
-                //Sequencial
                 long inicio = System.nanoTime();
-                BuscaSequencial.buscar(vetor, alvo);
+
+                //alteração 1, repetir várias vezes
+                for (int k = 0; k < 1000; k++) {
+                    BuscaSequencial.buscar(vetor, alvo);
+                }
+
                 long fim = System.nanoTime();
                 seq[i] = fim - inicio;
 
-                //Binária
-                Arrays.sort(vetor);
+                //alteração 2, usei o Arrays.copyof para criar cópia do vetor
+                int[] ordenado = Arrays.copyOf(vetor, n);
+
+                //alteração 3, ordenar somente a cópia
+                Arrays.sort(ordenado);
+
                 inicio = System.nanoTime();
-                BuscaBinaria.buscar(vetor, alvo);
+
+                //alteração 1(também aqui)
+                for (int k = 0; k < 1000; k++) {
+                    BuscaBinaria.buscar(ordenado, alvo);
+                }
+
                 fim = System.nanoTime();
                 bin[i] = fim - inicio;
 
-                //Árvore
+                //alteração 4,  usar vetor ordenado aqui
                 BST bst = new BST();
-                for (int num : vetor) {
+                for (int num : vetor) { // usa vetor original (aleatório)
                     bst.inserir(num);
                 }
 
                 inicio = System.nanoTime();
-                bst.buscar(alvo);
+
+                //Fiz alteração (outra aqui)
+                for (int k = 0; k < 1000; k++) {
+                    bst.buscar(alvo);
+                }
+
                 fim = System.nanoTime();
                 arv[i] = fim - inicio;
             }
@@ -54,13 +72,8 @@ public class Main {
             System.out.println("\nTamanho: " + n);
 
             System.out.println("Sequencial -> Média: " + media(seq) + " | Desvio: " + desvio(seq));
-                               
-
             System.out.println("Binária -> Média: " + media(bin) + " | Desvio: " + desvio(bin));
-                              
-
-            System.out.println("Árvore -> Média: " + media(arv) +  " | Desvio: " + desvio(arv));
-                             
+            System.out.println("Árvore -> Média: " + media(arv) + " | Desvio: " + desvio(arv));
         }
     }
 
